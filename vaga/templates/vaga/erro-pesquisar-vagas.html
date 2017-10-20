@@ -1,0 +1,16 @@
+{%  extends 'core/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Opss!</h1>
+        <p>Erro ao pesquisar vaga.</p>
+        <p>
+            <a href="{% url 'vaga:listar_vagas' %}" class="btn btn-primary btn-lg">Visualizar Vagas</a>
+        </p>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Jobs - Página Inicial</title>
+    <link rel="stylesheet" href="{% static "core/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "core/css/datatables.min.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "core/css/jquery-confirm.min.css" %}"/>
+    <link rel="stylesheet" href="{% static "core/css/custom.base.css" %}">
+</head>
+<body>
+    
+    <header >
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+    
+            <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'core:index' %}">Jobs</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse navbar-right">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="{% url 'core:index' %}">Início</a></li>
+                    <li><a href="{% url 'vaga:listar_vagas' %}">Vagas</a></li>
+                    {% if not user.is_authenticated %}
+                        <li><a href="{% url 'usuario:cadastro' %}">Cadastro</a></li>
+                        <li><a href="{% url 'usuario:login' %}">Login</a></li>
+                    {% else %}
+                        {% if user.user_type == "E" %}
+                            <li><a href="{% url 'vaga:gerenciar_vagas' %}">Gerenciar Vagas</a></li>
+                            <li><a href="{% url 'vaga:relatorios' %}">Relatorios</a></li>
+                        {% else %}
+                            <li><a href="{% url 'vaga:listar_candidaturas' %}">Candidaturas</a></li>
+                        {% endif %}
+                        
+                        <li><a href="{% url 'usuario:logout' %}">Logout</a></li>
+                    {% endif %}
+                    <li></li>
+                </ul>
+            </div>
+
+        </nav>
+        
+    </header>
+
+    <br><br><br><br>
+
+    <div id="corpo" class="container">
+        {% block content %}
+        <div class="jumbotron   ">
+            <h1>Bem-vindo ao JOBS</h1>
+            <p>O melhor lugar para encontrar seu novo trabalho</p>
+        </div>
+        <br>
+        <div class="row fix">
+            {%for vaga in vagas%}
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="{% static "core/img/vagas.jpg" %}" alt="">
+                        <div class="caption">
+                            <h4 class="text-center">{{vaga.nome}}</h4>
+                            <p>
+                                <strong>Escolaridade: </strong> {{vaga.get_escolaridade_display}}
+                            </p>
+                            <p>
+                                {% if not user.user_type == 'E' %}
+                                <a href="{% url 'vaga:candidatar' vaga_id=vaga.id %}" class="btn btn-primary form-control">Candidatar-se</a>
+                                {%else%}
+                                <div class="text-center">Apenas para candidatos!</div>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {%endfor%}
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well text-center">
+                    Veja a lista completa de vagas clicando <a href="{% url 'vaga:listar_vagas' %}">aqui</a>
+                </div></div>   
+        </div>
+        {% endblock content %}
+    </div>  
+    
+    <script type="text/javascript" src="{% static "core/js/jquery-3.2.1.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "core/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "core/js/datatables.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "core/js/jquery-confirm.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "core/js/custom.js" %}"></script>
+
+    
+    {% block scripts %}
+       
+    {% endblock %}
+</body>
+</html>

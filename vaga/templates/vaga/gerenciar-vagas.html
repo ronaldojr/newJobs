@@ -1,0 +1,184 @@
+{%  extends 'core/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+  <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Cadastro de vagas</h1>
+                </div>
+                <div class="panel-body">
+                    <div class="row"> 
+                        <div class="col-md-12">
+                            <form action="{%  url 'vaga:cadastrar_vaga' %}" method="POST">
+                                {% csrf_token %} 
+                                <div class="form-group col-md-12">
+                                    <label for="nome">Nome da vaga:</label>
+                                    <input type="text" class="form-control" name="nome" id="nome">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="faixaSalarialMin">Pretensão Salárial (min):</label>
+
+                                    <div class="input-group">
+                                        <span class="input-group-addon">R$</span>
+                                        <input type="number" min="0" class="form-control" name="faixaSalarialMin" id="faixaSalarialMin">
+                                        <span class="input-group-addon">,00</span>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="faixaSalarialMax">Pretensão Salárial (max):</label>
+
+                                    <div class="input-group">
+                                        <span class="input-group-addon">R$</span>
+                                        <input type="number" min="0" class="form-control" name="faixaSalarialMax" id="faixaSalarialMax">
+                                        <span class="input-group-addon">,00</span>
+                                    </div>
+
+                                </div>
+    
+                                <div class="form-group col-md-6">
+                                    <label for="experiencia">Anos de Experiência:</label>
+                                    <input type="number" min="0" class="form-control" name="experiencia" id="experiencia">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="escolaridade">Escolaridade:</label>
+                                    <select class="form-control" name="escolaridade" id="escolaridade">
+                                        <option value="MEDIO">Ensino Médio</option>
+                                        <option value="SUPERIOR_INC">Superior Incompleto</option>
+                                        <option value="SUPERIOR_COM">Superior Completo</option>
+                                        <option value="MESTRADO">Mestrado</option>
+                                        <option value="DOUTORADO">Doutorado</option>
+                                    </select>
+                                </div>
+        
+                                <div class="form-group col-md-6">
+                                    <label for="distancia">Distância (Kms):</label>
+                                    <input type="number" min="0" class="form-control" name="distancia" id="distancia">
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for=""></label>
+                                    <button class="btn btn-primary center-block">Cadastrar Vaga</button>
+                                </div>
+
+            
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </div>
+      <div class="col-md-2"></div>
+  </div>
+
+  <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{field.label}}: {{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{field.label}}: {{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+      </div>
+      <div class="col-md-4"></div>
+  </div>
+
+  <div class="row">
+            <h1 class="text-center">Lista de Vagas</h1>
+            {%if not vagas%}
+            <div class="well text-center">nenhuma vaga cadastrada</div> 
+            {%endif%}
+            
+            {%for vaga in vagas%}
+            <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{vaga.nome}}</h3>
+                </div>
+                <div class="panel-body">
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form name="form_{{vaga.id}}" action="{% url 'vaga:editar_vaga' %}/" method="POST">
+                                <div class="form-group">
+                                    <label for="nome">Nome da vaga:</label>
+                                    <input type="hidden" name="id" id="id_{{vaga.id}}" value="{{vaga.id}}">
+                                    <input type="hidden" name="empresa" id="id_{{vaga.id}}" value="{{vaga.empresa}}">
+                                    <input class="form-control" type="text" name="nome" id="nome_{{vaga.id}}" value="{{vaga.nome}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="faixaSalarialMin">Faixa Salárial (min):</label>
+                                    <input type="number" min="0" class="form-control" name="faixaSalarialMin" id="faixaSalarialMin_{{vaga.id}}"  value="{{vaga.faixaSalarialMin|floatformat:"0"}}">    
+                                </div>
+                                <div class="form-group">
+                                    <label for="faixaSalarialMax">Faixa Salárial (Max):</label>
+                                    <input type="number" min="0" class="form-control" name="faixaSalarialMax" id="faixaSalarialMax_{{vaga.id}}"  value="{{vaga.faixaSalarialMax|floatformat:"0"}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="experiencia">Experiência (anos):</label>
+                                    <input type="number" min="0" class="form-control" name="experiencia" id="experiencia_{{vaga.id}}"  value="{{vaga.experiencia}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="escolaridade">Escolaridade:</label>
+                                    <select class="form-control" name="escolaridade" id="escolaridade_{{vaga.id}}">
+                                        <option value="MEDIO" {% if vaga.escolaridade == 'MEDIO' %}selected="selected"{% endif %} >Ensino Médio</option>
+                                        <option value="SUPERIOR_INC" {% if vaga.escolaridade == 'SUPERIOR_INC' %}selected="selected"{% endif %}>Superior Incompleto</option>
+                                        <option value="SUPERIOR_COM" {% if vaga.escolaridade == 'SUPERIOR_COM' %}selected="selected"{% endif %}>Superior Completo</option>
+                                        <option value="MESTRADO" {% if vaga.escolaridade == 'MESTRADO' %}selected="selected"{% endif %}>Mestrado</option>
+                                        <option value="DOUTORADO" {% if vaga.escolaridade == 'DOUTORADO' %}selected="selected"{% endif %}>Doutorado</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nome">Distância:</label>
+                                    <input type="number" min="0" class="form-control" name="distancia" id="distancia_{{vaga.id}}" value="{{vaga.distancia}}">
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id-vaga="{{vaga.id}}" class="btn btn-primary form-control salvar"><span class=" glyphicon glyphicon-floppy-save "></span> Salvar</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button id-vaga="{{vaga.id}}" class="btn btn-danger form-control excluir"><span class=" glyphicon glyphicon-remove "></span> Excluir</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+           </div>
+            {%endfor%}
+        </div>
+    </div>
+    
+    <br><br>
+    {% endblock content %}
+    
+    
+    
+    
+    {% block scripts %}
+    <script type="text/javascript" src="{% static "vaga/js/gerenciar-vagas.js" %}"></script>
+    {% endblock scripts %}

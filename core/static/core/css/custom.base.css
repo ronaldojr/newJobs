@@ -1,0 +1,8 @@
+#navbar {
+    margin-right: 30px;
+}
+
+.row.fix {
+    display: flex;
+    flex-wrap: wrap;
+  }

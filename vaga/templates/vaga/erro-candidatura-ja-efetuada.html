@@ -1,0 +1,16 @@
+{%  extends 'core/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Opss!</h1>
+        <p>Você só pode candidatar-se a uma vaga apenas uma vez.</p>
+        <p>
+            <a href="{% url 'core:index' %}" class="btn btn-primary btn-lg">Página Inicial</a>
+        </p>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,42 @@
+{%  extends 'core/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="panel panel-default">
+        <div class="panel-heading">
+                <h3 class="panel-title">Lista de Candidaturas</h3>
+        </div>
+        <div class="panel-body">
+            <table id="tabelaCandidaturas" class="table table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <th>Vaga</th>
+                        <th>Pretensão</th>
+                        <th>Experiência</th>
+                        <th>Esocolaridade</th>
+                        <th>Distância</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for candidatura in candidaturas %}
+                <tr>
+                    <td>{{candidatura.vaga.nome}}</td>
+                    <td>{{candidatura.pretensao}}</td>
+                    <td>{{candidatura.experiencia}}</td>
+                    <td>{{candidatura.get_escolaridade_display}}</td>
+                    <td>{{candidatura.distancia}}</td>
+                    <td>{{candidatura.get_status_display}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static "vaga/js/candidaturas.js" %}"></script>
+{% endblock scripts %}

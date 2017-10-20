@@ -1,0 +1,67 @@
+{%  extends 'core/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+
+        <form action="{% url 'usuario:cadastrar' %}" method="POST">
+            {% csrf_token %} 
+            <div class="form-group">
+                    <label for="email" class="">E-mail</label>
+                    <input class="form-control" type="text" name="email" id="email" placeholder="E-mail">
+                </div>
+        
+                <div class="form-group">
+                    <label for="usuario" class="">Usuario</label>
+                    <input class="form-control" type="text" name="username" id="username" placeholder="Usuario">
+                </div>
+        
+                <div class="form-group">
+                    <label for="senha" class="">Senha</label>
+                    <input class="form-control" type="password" name="password" id="password">
+                </div>
+        
+        
+                <div class="form-group">
+                    <label for="tipo" class="">Tipo</label>
+                    <select name="user_type" id="user_type" class="form-control">
+                        <option value="C">Candidato</option>
+                        <option value="E">Empresa</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary center-block">Cadastrar</button>
+        </form>
+
+    </div>
+    <div class="col-md-4"></div>
+</div>
+
+<br>
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{field.label}}: {{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>{{field.label}}: {{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="col-md-4"></div>
+</div>
+{% endblock content %}

@@ -1,0 +1,99 @@
+{%  extends 'core/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+{% if erro %}
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Ops!!!</h1>
+        <p>{{erro}}</p>
+        <p>
+            Entre em contato com o administrador do sistema.
+        </p>
+    </div>
+</div>
+
+{% else %}
+
+    {% csrf_token %}
+
+    {% for vaga in vagas  %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+                <h3 class="panel-title">{{vaga.vaga.nome}}</h3>
+        </div>
+        <div class="panel-body">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="list-group col-md-3 pull-right">
+                        <li class="list-group-item">
+                            <span id="total_validas_{{vaga.vaga.id}}" class="badge">{{vaga.total_validas}}</span>
+                            Candidaturas Válidas
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">{{vaga.total_invalidas}}</span>
+                            Candidaturas Inválidas
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            
+            
+            <table class="table table-bordered table-striped table-responsive relatorioTabela">
+                <thead>
+                    <tr>
+                        <th>Candidato</th>
+                        <th>Dados</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for candidatura in vaga.candidaturas_validas %}
+                    <tr>
+                        <form name="form_{{candidatura.id}}" method="post">
+                        <td>{{candidatura.candidato}}</td>
+                        <td>
+                            <strong>Pretensão: </strong>{{candidatura.pretensao}}<br>
+                            <strong>Experiência: </strong>{{candidatura.experiencia}}<br>
+                            <strong>Escolaridade: </strong>{{candidatura.get_escolaridade_display}}<br>
+                            <strong>Distância: </strong>{{candidatura.distancia}}
+                        </td>
+                        <td>
+                            <input type="hidden" name="id" value="{{candidatura.id}}">
+                            <select class="form-control" name="status" id="status_{{candidatura.id}}">
+                                <option value="A" {% if candidatura.status == 'A' %}selected="selected"{% endif %} >Aguardando avaliação</option>
+                                <option value="B" {% if candidatura.status == 'B' %}selected="selected"{% endif %} >Em avaliação</option>
+                                <option value="C" {% if candidatura.status == 'C' %}selected="selected"{% endif %} >Aprovado</option>
+                                <option value="D" {% if candidatura.status == 'D' %}selected="selected"{% endif %} >Reprovado</option>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <button id-candidatura="{{candidatura.id}}" class="btn btn-primary salvar"><span class=" glyphicon glyphicon-floppy-save "></span></button>&nbsp;
+                            <button id-candidatura="{{candidatura.id}}" id-vaga="{{vaga.vaga.id}}" class="btn btn-danger excluir"><span class=" glyphicon glyphicon-remove "></span></button></td>
+                        </td>
+                        </form>
+                    </tr>    
+                    
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% endfor %}
+
+{%endif%}
+
+<br><br>
+{% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript" src="{% static "vaga/js/relatorios.js" %}"></script>
+{% endblock scripts %}

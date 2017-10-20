@@ -1,0 +1,16 @@
+{%  extends 'core/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Opss!</h1>
+        <p>Você só pode se candidatar a uma vaga se estiver logado.</p>
+        <p>
+            <a href="{% url 'usuario:login' %}" class="btn btn-primary btn-lg">Página de login</a>
+        </p>
+    </div>
+</div>
+
+{% endblock content %}
