@@ -9,7 +9,7 @@ Versão Django: 1.8
 Procedimentos para subir em desenvolvimento
 -------------------------------------------
 
-1 - git clone https://github.com/ronaldojr/jobs.git  && cd jobs
+1 - git clone https://github.com/ronaldojr/newJobs.git  && cd jobs
 
 2 - pip install -r requirements.txt
 
