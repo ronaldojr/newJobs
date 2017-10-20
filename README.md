@@ -1,4 +1,4 @@
-# jobs
+# newJobs
 protótipo de um sistema de vagas de empregos
 
 
